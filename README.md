@@ -157,6 +157,9 @@ left untouched.
 Across ~50k lines of third-party code, 115 files were split and **not one test changed its
 result** — the 3 unsplittable files were safely rolled back.
 
+Reproduce this table yourself with [`scripts/bench-real-crates.sh`](scripts/bench-real-crates.sh)
+(needs `cargo`, `git`, and network access).
+
 ## What gets preserved
 
 - Doc-comments (`///`, `//!`) and `#[derive]`/attribute lines — they're part of each

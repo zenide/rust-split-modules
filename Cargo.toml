@@ -12,7 +12,7 @@ documentation = "https://docs.rs/cargo-split-modules"
 readme = "README.md"
 keywords = ["cargo", "refactor", "module", "split", "codegen"]
 categories = ["development-tools", "development-tools::cargo-plugins", "command-line-utilities"]
-exclude = ["/tests/fixtures/**/target", "/.github", "/img"]
+exclude = ["/tests/fixtures/**/target", "/.github", "/img", "/scripts"]
 
 [[bin]]
 name = "cargo-split-modules"
