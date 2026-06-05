@@ -30,6 +30,43 @@ src/parser/
 
 …and your crate still compiles and passes its tests, unchanged.
 
+## Why one item per file (especially for AI-generated code)
+
+Large, monolithic files are a tax on humans and an outright hazard for AI coding agents.
+Atomicity and modular structure stop being style preferences and start being a correctness
+and throughput concern. One item per file gives you:
+
+- **Parallel edits without merge conflicts.** When several agents (or several teammates)
+  work a codebase at once, two changes to two functions that live in the same 1,500-line
+  file collide; the same two changes to two separate files don't. Small files turn
+  "serialize everything through one hot file" into "edit independently, merge cleanly." For
+  fleets of agents working concurrently, this is the difference between scaling out and
+  constantly stepping on each other.
+
+- **Atomic, low-blast-radius replacements.** An agent rewriting a whole file has to
+  reproduce everything it isn't changing — and any slip corrupts unrelated code. When a
+  function owns its own file, "replace this function" is "replace this file": the unit of
+  change matches the unit of meaning, so a full-file rewrite touches exactly one item and
+  nothing else. Smaller files also mean smaller diffs and smaller, cheaper context windows
+  per edit.
+
+- **The filesystem *is* the search index.** `src/parser/parse_expr.rs` tells you where
+  `parse_expr` lives without parsing a single token. Listing files is a free, always-current
+  symbol index — no AST tooling, no language server, no `ctags`, no semantic database to
+  build or keep in sync. `find`, `ls`, and a fuzzy file-opener get you to any definition
+  directly, and an agent can locate code with a cheap directory read instead of an expensive
+  whole-file scan.
+
+- **Searchability and locality.** Grepping a name surfaces its definition file by *path*,
+  not buried at line 1,142 of a grab-bag module. Reading one item means opening one short
+  file instead of loading a giant one and scrolling to the relevant region — less noise for
+  a reviewer and far less irrelevant context for a model.
+
+The catch has always been that splitting files by hand is tedious and error-prone — exactly
+the kind of mechanical refactor that breaks imports and visibility. This tool does it
+mechanically and **proves it didn't break anything** (see [Why it's safe](#why-its-safe)),
+so you get the structure without the risk.
+
 ## Why it's safe
 
 Most "move code around" tools risk breaking your build. This one is built so it
