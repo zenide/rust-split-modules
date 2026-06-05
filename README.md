@@ -11,6 +11,38 @@ cargo split-modules --recursive src     # split every oversized file in a crate
 cargo split-modules -n src/big.rs       # dry run: show what would happen
 ```
 
+## Installation
+
+### For humans
+
+It's published on [crates.io](https://crates.io/crates/cargo-split-modules):
+
+```bash
+cargo install cargo-split-modules
+```
+
+This installs a `cargo` subcommand, so you invoke it as `cargo split-modules …` (or call
+the `cargo-split-modules` binary directly). It needs a Rust toolchain with `cargo` on
+`PATH`; `rustfmt` is used if present but optional.
+
+### For AI agents
+
+Install the agent skill with [`npx skills`](https://github.com/vercel-labs/skills) (works
+with Claude Code, Codex, Cursor, OpenCode, and others):
+
+```bash
+npx skills add zenide/rust-split-modules
+```
+
+This drops a `SKILL.md` into your agent's skills directory telling the agent when and how to
+use the tool (and that it's safe to run because every change is compiler-verified and rolled
+back on failure). The agent still needs the binary on `PATH` — `cargo install
+cargo-split-modules` — which the skill instructs it to do. Once installed, an agent can run:
+
+```bash
+cargo split-modules --recursive src     # safe: verified + auto-rollback
+```
+
 Turn this:
 
 ```
