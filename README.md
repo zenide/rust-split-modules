@@ -1,5 +1,9 @@
 # cargo-split-modules
 
+<p align="center">
+  <img src="img/cover.png" alt="cargo-split-modules" width="100%">
+</p>
+
 Split large Rust source files into one-item-per-file submodules — **preserving comments
 and the public API**, with the **compiler as the safety net**.
 
